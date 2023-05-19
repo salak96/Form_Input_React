@@ -25,21 +25,20 @@ export default function Todo() {
     }
 
     function handleCompleteTask(id) {
-       const updateTask = tasks.map((task)=>{
-            if(id === task.id) {
+        const updateTask = tasks.map((task) => {
+            if (id === task.id) {
                 return {
                     ...task,
-                    completed:!task.completed
-                }
+                    completed: !task.completed,
+                };
             }
             return task;
-        })
+        });
         setTasks(updateTask);
     }
     function handleRemoveTask(id) {
-        const removeTask = tasks.filter((task)=> id !== task.id)
+        const removeTask = tasks.filter((task) => id !== task.id);
         setTasks(removeTask);
-
     }
     return (
         <Card>
@@ -59,10 +58,12 @@ export default function Todo() {
                                     {task.name} {task.completed ? 'Complete' : 'Incomplete'}
                                 </span>
                                 <div className={'flex items-center gap-2'}>
-                                    <Button onClick={()=>handleCompleteTask(task.id)} className={'px-2 py-1 border text-xs bg-red-600'}>
+                                    <Button onClick={() => handleCompleteTask(task.id)} className={'px-2 py-1 border text-xs bg-red-600'}>
                                         Mark as {task.completed ? 'Incomplete' : 'Complete'}
-                                        </Button>
-                                    <Button onClick={()=>handleRemoveTask(task.id)} className={'px-2 py-1 border text-xs bg-yellow-500'}>delete</Button>
+                                    </Button>
+                                    <Button onClick={() => handleRemoveTask(task.id)} className={'px-2 py-1 border text-xs bg-yellow-500'}>
+                                        delete
+                                    </Button>
                                 </div>
                             </li>
                         ))}
