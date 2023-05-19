@@ -1,51 +1,42 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-unused-vars */
 import PlaceContentCenter from './components/PlaceContentCenter.jsx';
-import Todo from './components/Todo.jsx';
-import Button from './components/Button.jsx';
 import React, { useEffect, useState } from 'react';
-
+import axios from 'axios';
+import Card from './components/card.jsx';
 function App(props) {
-    const [name, setName] = useState('');
-    const [online, setOnline] = useState(false);
-    const [scrollPosition, setScrollPosition] = useState(window.scroll);
+    const [users, setUser] = useState([]);
 
+    useEffect(() => {
+        async function getUser() {
+          try {
+            const response = await axios.get('https://jsonplaceholder.typicode.com/users');
+            setUser(response.data);
+          }
+            catch (error) {
+            console.error('Something went wrong');
 
-
-    // selalu dipanggil ketika ada perubahan
-    useEffect(() => {
-        // console.log('Alway rendered pertama');
-    });
-    // // dia direndered ketika first render
-    useEffect(() => {
-        // console.log('First rendered kedua');
-    }, []);
-    // dipanggil ketika ada perubahan pada name
-    useEffect(() => {
-        // console.log(`I am now ${online ? 'online' : 'offline'}`);
-    }, [online]);
-    function updateScrollPosition() {
-        const windowsScrolling = window.scrollY;
-        console.log(`Window scrolled position ${windowsScrolling} `)
-        setScrollPosition(windowsScrolling)
+            }
         }
-
-    //clean up useEffect
-    useEffect(() => {
-        window.addEventListener('scroll', updateScrollPosition);
+        getUser()
     }, []);
     return (
-        <div className={'h-[4000px]'}>
-            <input
-                className={
-                    'p-2 text-black transition duration-300 w-full focus:outline-none focus:ring border-black focus:ring-red-600 focus:border-blue-400 text-blackshadow-sm rounded-lg'
-                }
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-            
-            <Button onClick={()=>setOnline(online=>!online)}>Set Online</Button>
-        </div>
+        <PlaceContentCenter>
+           <Card>
+                <Card.Title>Users :{users.length}</Card.Title>
+                <Card.Body>
+                    {users.length > 0 ? (
+                     <ol>
+                        {users.map((user)=> (
+                            <li key={user.id}>{user.name}({user.username})</li>
+                        ))}
+                     </ol>
+                    ):(
+                    <div>There are no users.</div>
+                    )}
+                </Card.Body>
+            </Card>
+        </PlaceContentCenter>
     );
 }
 
